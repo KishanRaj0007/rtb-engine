@@ -1,37 +1,30 @@
-# --- Stage 1: Build Stage ---
-# Use a full Java 21 JDK image to build our application
-FROM eclipse-temurin:21-jdk-jammy as builder
+# === Stage 1: The Build ===
+# We use the official Maven image (which has Java 21) as our "builder"
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml first
-# This leverages Docker's layer caching. As long as pom.xml doesn't change,
-# Docker won't re-download all the dependencies.
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-# Download dependencies
-RUN ./mvnw dependency:go-offline
+# Copy the pom.xml first. This is a cache optimization.
+# Docker will only re-download dependencies if pom.xml changes.
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
 # Copy the rest of the source code
 COPY src ./src
 
-# Build the application, skipping the tests
-RUN ./mvnw clean package -DskipTests
+# Run the build
+RUN mvn clean package -DskipTests
 
-
-# --- Stage 2: Final Runtime Stage ---
-# Use a slim Java 21 runtime-only image (JRE), which is smaller and more secure
-FROM eclipse-temurin:21-jre-jammy
+# === Stage 2: The Final Image ===
+# Start from a tiny, JRE-only image
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copy ONLY the built JAR file from the 'builder' stage
-COPY --from=builder /app/target/*.jar app.jar
+# This is the magic: Copy *only* the built .jar file
+# from the "builder" stage into this tiny final image
+COPY --from=builder /app/target/*.jar /app.jar
 
-# Expose the port Spring Boot runs on (though this service doesn't use it, it's good practice)
-EXPOSE 8080
-
-# The command to run when the container starts
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Tell the container what command to run on startup
+ENTRYPOINT ["java", "-jar", "/app.jar"]
