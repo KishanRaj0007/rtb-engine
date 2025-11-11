@@ -1,0 +1,29 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: bidder-service
+#   labels:
+#     app: bidder-service #<-- A label for the ServiceMonitor to find
+# spec:
+#   selector:
+#     app: bidder-service #<-- Finds all pods with the label "app: bidder-service"
+#   ports:
+#     - name: http-traffic #<-- The CRITICAL named port
+#       port: 8080
+#       targetPort: 8080
+apiVersion: v1
+kind: Service
+metadata:
+  name: bidder-service-svc
+  # This label is what the ServiceMonitor (above) looks for
+  labels:
+    app: bidder-service
+spec:
+  # This selector finds your running Pods
+  selector:
+    app: bidder-service
+  ports:
+  # We MUST name the port 'http-metrics'
+  - name: http-metrics
+    port: 8080
+    targetPort: 8080

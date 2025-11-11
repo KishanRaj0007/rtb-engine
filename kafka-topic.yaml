@@ -1,0 +1,12 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: bid-requests
+  namespace: kafka
+  labels:
+    # This label is critical. It tells Strimzi
+    # which cluster this topic belongs to.
+    strimzi.io/cluster: "my-cluster" 
+spec:
+  partitions: 3
+  replicas: 1

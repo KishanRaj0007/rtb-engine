@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bidder-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bidder-service
+  template:
+    metadata:
+      labels:
+        app: bidder-service
+    spec:
+      containers:
+      - name: bidder-service
+        image: bidder-service:latest
+        # Use the local image, don't search the internet
+        imagePullPolicy: IfNotPresent 
+        ports:
+        - containerPort: 8080

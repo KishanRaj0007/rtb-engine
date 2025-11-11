@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: impression-simulator
+spec:
+  replicas: 1 # We only need one copy of this simulator
+  selector:
+    matchLabels:
+      app: impression-simulator
+  template:
+    metadata:
+      labels:
+        app: impression-simulator
+    spec:
+      containers:
+      - name: impression-simulator
+        image: impression-simulator:latest
+        # This is critical. It tells K8s to use the image
+        # we just built locally, not to search the internet.
+        imagePullPolicy: IfNotPresent

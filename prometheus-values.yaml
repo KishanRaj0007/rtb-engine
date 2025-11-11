@@ -1,0 +1,27 @@
+# This file disables everything we don't need and
+# dramatically shrinks the disk to protect your C: drive.
+
+# 1. Disable services we don't need
+alertmanager:
+  enabled: false
+grafana:
+  enabled: true # We need this
+prometheus-node-exporter:
+  enabled: false
+prometheus-adapter:
+  enabled: false
+kube-state-metrics:
+  enabled: false
+
+# 2. Configure Prometheus (the "scraper")
+prometheus:
+  # 3. THIS IS THE C: DRIVE FIX
+  # We give it a tiny 2Gi disk, not the 100Gi default
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi # <-- The Fix

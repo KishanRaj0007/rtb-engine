@@ -1,0 +1,42 @@
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: bidder-service-monitor
+#   namespace: monitoring #<-- MUST be in the same namespace as Prometheus
+#   labels:
+#     release: monitoring #<-- This label tells the Prometheus Operator to read this file
+# spec:
+#   selector:
+#     matchLabels:
+#       app: bidder-service #<-- Tells it to find any *Service* with this label
+#   namespaceSelector:
+#     matchNames:
+#       - default #<-- Tells it to look for that Service in the "default" namespace
+#   endpoints:
+#   - port: http-traffic #<-- Tells it to scrape the port *named* "http-traffic"
+#     path: /actuator/prometheus #<-- Tells it to scrape this exact path
+#     interval: 15s
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: bidder-service-monitor
+  # We put the monitor in the 'monitoring' namespace
+  namespace: monitoring
+  # THIS IS THE FIX:
+  # The prometheus-stack chart looks for this *exact* label
+  labels:
+    release: monitoring
+spec:
+  # Tell the monitor to look in the 'default' namespace
+  namespaceSelector:
+    matchNames:
+    - default
+  # Tell the monitor to find any Service
+  # with the 'app: bidder-service' label
+  selector:
+    matchLabels:
+      app: bidder-service
+  endpoints:
+  - port: http-metrics
+    path: /actuator/prometheus
+    interval: 15s

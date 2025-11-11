@@ -1,0 +1,10 @@
+# Ignore Git files
+.git/
+.gitignore
+
+# Ignore build artifacts
+target/
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
