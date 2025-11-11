@@ -12,6 +12,10 @@ jobs:
     # This is the 0.01% trick: a "matrix"
     # This runs the *same* job twice, in parallel,
     # once for each 'service' in the list.
+    permissions:
+      contents: read  # Needed to check out your code
+      packages: write # Needed to push Docker images
+      
     strategy:
       matrix:
         service: [ 'bidder-service', 'impression-simulator' ]
