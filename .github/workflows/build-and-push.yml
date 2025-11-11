@@ -27,8 +27,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          # This is your GitHub username. We get it automatically.
-          username: ${{ github.repository_owner }}
+          # This is your GitHub username. Username should be in lowercase
+          username: kishanraj0007
           # This is a temporary password. GitHub Actions creates
           # it for us automatically. It's very secure.
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -41,5 +41,5 @@ jobs:
           context: RTB Engine/${{ matrix.service }}
           push: true
           # This creates the image name, e.g.,
-          # ghcr.io/your-username/bidder-service:latest
-          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.service }}:latest
+          # ghcr.io/your-username/bidder-service:latest --> username shoud be in lowercase
+          tags: ghcr.io/kishanraj0007/${{ matrix.service }}:latest
