@@ -37,8 +37,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           # Tell Docker the path to the Dockerfile
-          # e.g., "RTB Engine/bidder-service"
-          context: RTB ENGINE/${{ matrix.service }}
+          context: ${{ matrix.service }}
           push: true
           # This creates the image name, e.g.,
           # ghcr.io/your-username/bidder-service:latest --> username shoud be in lowercase
