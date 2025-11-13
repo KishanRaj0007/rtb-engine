@@ -27,8 +27,8 @@ Performance is quantitatively measured using a full observability stack (Prometh
 
 **Test 0 : Idle Baseline (No Load)**
 
-* `bidder-service` is running (1 replica, 3 threads), `im`  
-* `pression-simulator` is scaled to 0\.  
+* `bidder-service` is running (1 replica, 3 threads), 
+* `impression-simulator` is scaled to 0\.  
 * **Result:** 2.06k QPS @ 0.0217ms p99 Latency.  
 * This isn't "real" QPS. This is the raw speed of the Kafka consumer (on virtual threads) idly polling the empty Kafka topic. It demonstrates the baseline speed of the event loop with zero I/O.
 
