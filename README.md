@@ -90,11 +90,11 @@ Refer to this video for setting up and testing everything from scratch.
 * wsl –shutdown.  
 * Make sure there is 50+GB inside the C drive. Because the load from ingestion service will fill the C drive brutally. And these below commands should be Run in Powershell.  
 * minikube start \--driver=docker \--memory=12228 \--cpus=12  
-* Install Postgres and Redis  
+**Install Postgres and Redis**
 - helm repo add bitnami https://charts.bitnami.com/bitnami  
 - helm install postgres bitnami/postgresql \--set auth.postgresPassword=mysecretpassword  
 - helm install redis bitnami/redis \--set auth.enabled=false \--set replica.replicaCount=0  
-* Install kafka  
+**Install kafka**  
 - minikube kubectl \-- create namespace kafka  
 - minikube kubectl \-- apply \-f 'https://strimzi.io/install/latest?namespace=kafka' \-n kafka  
 - minikube kubectl \-- get pods \-n kafka \-w
@@ -106,31 +106,31 @@ Refer to this video for setting up and testing everything from scratch.
 
   (Wait for 'my-cluster-dual-role-0' to be 1/1 Running. This is your Kafka cluster)
 
-* Go to the RTB Engine directory and apply kafka topics.  
+**Go to the RTB Engine directory and apply kafka topics.**  
 - minikube kubectl \-- apply \-f kafka-topic.yaml  
 - minikube kubectl \-- apply \-f kafka-topic-responses.yaml  
-* Install Grafana and Prometheus  
+**Install Grafana and Prometheus**
 - helm repo add prometheus-community [https://prometheus-community.github.io/helm-charts](https://prometheus-community.github.io/helm-charts)  
 - helm repo update  
 - helm install monitoring prometheus-community/kube-prometheus-stack \-n monitoring \--create-namespace \-f prometheus-values.yaml  \[In the RTB Engine Folder\]  
 - minikube kubectl \-- get pods \-n monitoring \-w  \[Wait for all pods to be ready\]  
-* Build and Deploy bidder-service. These commands should be run inside bidder-service directory.  
+**Build and Deploy bidder-service. These commands should be run inside bidder-service directory.**
 - & minikube \-p minikube docker-env | Invoke-Expression  
 - docker build \-t bidder-service:latest .  
 - minikube kubectl \-- apply \-f bidder-service-monitor.yaml  \[RTB Engine/bidder-service\]  
 - minikube kubectl \-- apply \-f bidder-service-svc.yaml \[RTB Engine/bidder-service\]  
 - minikube kubectl \-- apply \-f deployment.yaml  
-* Build and Deploy impression-simulator. Run inside RTB ENGINE/impression-simulator  
+**Build and Deploy impression-simulator. Run inside RTB ENGINE/impression-simulator**
 - cd "RTB Engine/impression-simulator"  
 - & minikube \-p minikube docker-env | Invoke-Expression  
 - docker build \-t impression-simulator:latest .  
 - minikube kubectl \-- apply \-f deployment.yaml  
-* For prometheus  
+**For prometheus**
 - minikube kubectl \-- port-forward prometheus-monitoring-kube-prometheus-prometheus-0 9090:9090 \-n monitoring  
 - Go to localhost:9090  
   → check in status/Target Health about UP Status of our bidder service. Refresh and wait 1 minute.  
   ![](assets/5.png)  
-* For Grafana  
+**For Grafana**
 - Get the Grafana pod name  
   minikube kubectl \-- get pods \-n monitoring  
 - minikube kubectl \-- port-forward monitoring-grafana-869ff49f99-hxpfd 3000:3000 \-n monitoring  \[replace grafana correct name from list by \-n monitoring\]  
@@ -144,7 +144,7 @@ Refer to this video for setting up and testing everything from scratch.
 - Analyze the result.
 
 
-* Before going to Prometheus and Grafana, it is recommended to check the logs of bidder-service.  
+**Before going to Prometheus and Grafana, it is recommended to check the logs of bidder-service.**
 - minikube kubectl – get pods  
 - Copy the pod name of bidder service  
 - minikube kubectl – logs \-f \[name of bidder-service\]  
@@ -154,6 +154,7 @@ Refer to this video for setting up and testing everything from scratch.
 # Some suggestions and important commands
 
 * Whenever you make some changes in bidder then make sure to change → Spring.kafka.consumer.group-id from application.properties
+* Always scale down impression-simulator to 0 replicas when it is not required in runtime. It will save lot of memory.
 
 **How to stop**
 
@@ -196,4 +197,3 @@ Refer to this video for setting up and testing everything from scratch.
    DISKPART\> compact vdisk  
    DISKPART\> detach vdisk  
    DISKPART\> exit
-
