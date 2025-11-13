@@ -15,7 +15,7 @@ The system is composed of two primary microservices that simulate a real-world b
 Data Analysis for High Bidding Chance :  
 [https://www.kaggle.com/code/kishanraj0007/rtb-engine](https://www.kaggle.com/code/kishanraj0007/rtb-engine)
 
-![LLD]()
+![LLD](assets/0.png)
 
 ## Performance & Scalability
 
