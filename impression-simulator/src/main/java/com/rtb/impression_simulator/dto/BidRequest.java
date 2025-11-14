@@ -2,8 +2,6 @@ package com.rtb.impression_simulator.dto;
 
 import java.util.UUID;
 
-// This record represents one "ad opportunity" or "bid request"
-// We add a unique impressionId to track it through the whole system.
 public record BidRequest(
     String impressionId,
     String siteId,
@@ -13,8 +11,6 @@ public record BidRequest(
     String advertiserId,
     String osId
 ) {
-    // A helper factory method to create a new request from a CSV row
-    // We give it a new, random UUID for tracking.
     public static BidRequest fromCsvRow(String csvRow) {
         // Accept a raw CSV row string, split into fields and validate.
         String[] parts = csvRow.split(",");

@@ -12,7 +12,4 @@ public record BidRequest(
     String advertiserId,
     String osId
 ) {
-    // As a 'record', this automatically gets a constructor,
-    // getters, equals(), hashCode(), and toString().
-    // Spring's JsonDeserializer will use this constructor.
 }

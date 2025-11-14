@@ -30,7 +30,7 @@ public class KafkaProducerService {
         // Increment the counter and get the new value.
         long count = requestCounter.incrementAndGet();
 
-        // (THE FIX) Log every 1000th request. This is deterministic and reliable.
+        // Log every 1000th request. This is deterministic and reliable.
         if (count % 1000 == 0) {
             log.info("Successfully sent {} total requests. Last ID: {}", count, request.impressionId());
         }

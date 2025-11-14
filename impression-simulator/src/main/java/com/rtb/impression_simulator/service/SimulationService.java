@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-// We REMOVED "implements CommandLineRunner"
+// REMOVED "implements CommandLineRunner"
 public class SimulationService {
 
     private static final Logger log = LoggerFactory.getLogger(SimulationService.class);
@@ -26,7 +26,7 @@ public class SimulationService {
     private final KafkaProducerService kafkaProducerService;
     private final Random random = new Random();
 
-    // This will hold our 500k+ records in memory
+    // This holds 500k+ records in memory
     private List<CSVRecord> csvRecords;
 
     public SimulationService(ResourceLoader resourceLoader, KafkaProducerService kafkaProducerService) {
@@ -54,7 +54,7 @@ public class SimulationService {
 
     /**
      * This is the new "worker" method.
-     * It will be run by 5,000+ virtual threads in parallel.
+     * It will be run by virtual threads in parallel--> maybe say 500 set as of now, I will do hyperparameter tuning.
      * Each thread will run this loop indefinitely.
      */
     public void runSimulationLoop() {
@@ -71,7 +71,7 @@ public class SimulationService {
                 // OS thread for another worker.
                 kafkaProducerService.sendBidRequest(request);
 
-                // 4. NO SLEEP. We want 100% throughput.
+                // 4. NO SLEEP. I want 100% throughput.-> faced many problems with sleep.
             }
         } catch (Exception e) {
             // Log if a single worker thread crashes

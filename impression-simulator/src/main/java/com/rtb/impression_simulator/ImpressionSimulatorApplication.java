@@ -11,7 +11,7 @@ public class ImpressionSimulatorApplication {
 		SpringApplication app = new SpringApplication(ImpressionSimulatorApplication.class);
 
 		// This is the magic line. It tells Spring Boot "Do NOT start a web server."
-		// This will save the memory that was causing our OOM error.
+		// This will save the memory that was causing OOM error.
 		app.setWebApplicationType(WebApplicationType.NONE); 
 		app.run(args);
 	}
